@@ -2,16 +2,21 @@ pcall(function()
 	require "defines"
 end)
 
+local fre_interface = remote.interfaces['Free_Real_Estate'] ~= nil
+
 script.on_event(defines.events.on_gui_click, function(event)
-	local elem= event.element
-	if elem.name == "trashbinguibutton" then
+	local elem = event.element
+
+	if(elem.name == "trashbinguibutton") then
 		local player = game.players[event.element.player_index]
-			if (player) then
-				--player.cursor_stack = nil
-				if(player.cursor_stack ~= nil) then
-					player.cursor_stack.clear()
-				end
+
+		if(player.cursor_stack ~= nil) then
+			if(fre_interface) then
+				remote.call('Free_Real_Estate', 'destroyed_item', player.cursor_stack)
 			end
+
+			player.cursor_stack.clear()
+		end
 	end
 end)
 
